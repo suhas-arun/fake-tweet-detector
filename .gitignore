@@ -1,1 +1,4 @@
 .idea
+.vscode
+src/config.py
+src/__pycache__
