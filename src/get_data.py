@@ -1,5 +1,5 @@
-import snscrape.modules.twitter as sntwitter
 from itertools import islice
+import snscrape.modules.twitter as sntwitter
 from account_info import AccountInfo
 
 
@@ -19,13 +19,13 @@ def get_tweets(username, max_tweets=100):
 def get_account_info(username, max_tweets=100):
     tweets = get_tweets(username, max_tweets)
     account_id = get_user_id(username)
-    if id == -1:
+    if account_id == -1:
         return None
 
     likes = []
     retweets = []
 
-    likes, retweets = get_likes_retweets(tweets)
+    likes, retweets = get_likes_retweets(tweets, likes, retweets)
 
     # TODO: Repeat for followers to get additional data up to 1000
 
@@ -34,7 +34,7 @@ def get_account_info(username, max_tweets=100):
     return AccountInfo(account_id, username, num_followers, likes, retweets)
 
 
-def get_likes_retweets(tweets, likes=[], retweets=[]):
+def get_likes_retweets(tweets, likes, retweets):
     for tweet in tweets:
         likes.append(tweet.likeCount)
         retweets.append(tweet.retweetCount)
