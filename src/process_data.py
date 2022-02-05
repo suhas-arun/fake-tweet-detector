@@ -3,10 +3,41 @@
 
 L = 0.2
 
+from cgi import test
+from optparse import Values
 from benfordslaw import benfordslaw
 import pandas as pd
 import json
 from get_data import get_account_info
+from scipy import stats
+
+
+numbers = {1: 0,
+           2: 0,
+           3: 0,
+           4: 0,
+           5: 0,
+           6: 0,
+           7: 0,
+           8: 0,
+           9: 0}
+
+def frequencyCalc(dataSet):
+    for val in dataSet:
+        leadingDigit = int(str(val)[0])
+        if (leadingDigit != 0):
+            numbers[leadingDigit] += 1
+
+    # convert to percentage
+    total = sum(numbers.values())
+    print("Sum:", total)
+    print(numbers)
+
+    observedFrequencies = []
+    for value in numbers.values():
+        observedFrequencies.append((value/total)*100)
+    return observedFrequencies
+
 
 
 def benfordsLawTest(data, method='ks'):
@@ -68,38 +99,25 @@ data = {'followers' :[1929345],
         'likes' :[],
         'retweets': []}
 
-
-""" with open('src/user-tweets-single.json') as raw:
-    res = json.load(raw)
-print(type(res))
-for key in res:
-    print(key)
-
-print(res['retweetCount'])
-
-with open('src/user-tweets.json') as raw:
-    dat = raw.readlines()
-
-res = {}
-
-tweet = 0
-for line in dat:
-    res |= {tweet: json.loads(line)}
-    tweet += 1
-
-for i in range(0,99):
-    data['likes'].append(res[i]['likeCount'])
-    data['retweets'].append(res[i]['retweetCount'])
-
-print(data)
-
-print(testProcedure(data, 'ks', L)) """
+ 
 
 # get data
-returnedData = get_account_info("BBC", 1000)
+returnedData = get_account_info("earthquakesSF", 1000)
 
 
 data['likes'] = returnedData.tweet_likes
 data['retweets'] = returnedData.tweet_retweets
-
 print(data)
+print(testProcedure(data, 'ks', L))
+
+observed = frequencyCalc(data['retweets'])
+# observed = [10.1, 17.6, 7.5, 16.7, 9.9, 1.7, 8.8, 10.1, 11.6]
+expected = [30.1, 17.6, 12.5, 9.7, 7.9, 6.7, 5.8, 5.1, 4.6]
+print(observed)
+
+# this returns 2 values, statistic and p value.
+# it is assumed that the the two distributions are identical (null hypothesis)
+# if stat is small or P  value is large, we accept the null hypothesis
+# if stat is large or p small, we reject the null hypothesis and say that they are different distribtuions
+# i.e. the data set does not follow benfords law.
+print(stats.ks_2samp(observed, expected))
