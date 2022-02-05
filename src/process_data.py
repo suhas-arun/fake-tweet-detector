@@ -5,6 +5,7 @@ L = 0.2
 
 from benfordslaw import benfordslaw
 import pandas as pd
+import json
 
 
 
@@ -19,6 +20,7 @@ def benfordsLawTest(data, method='ks'):
     X = pd.DataFrame({'values':data})
     testData = X['values']
     results = bl.fit(testData)
+    bl.plot()
     return results['P']
 
 
@@ -42,7 +44,8 @@ def testProcedure(importedData, method, l):
     likes = importedData['likes']
     retweets = importedData['retweets']
 
-    pFollowers = benfordsLawTest(followers, method=method)
+    #pFollowers = benfordsLawTest(followers, method=method)
+    pFollowers = 1
     pLikes = benfordsLawTest(likes, method=method)
     pRetweets = benfordsLawTest(retweets, method=method)
     
@@ -61,15 +64,33 @@ def testProcedure(importedData, method, l):
     
 
 
-data = {'followers' :[12,14,18,3,2,54,85,97656,7,847,4542,465],
-        'likes' :[1,1,14,5,2,67,1,234,6,23,56,7,8,2,0,0,1],
-        'retweets': [1,2,2,1,1,1,1,5,3,6,8,5,0,4,9]}
+data = {'followers' :[1929345],
+        'likes' :[],
+        'retweets': []}
+
+
+with open('src/user-tweets-single.json') as raw:
+    res = json.load(raw)
+print(type(res))
+for key in res:
+    print(key)
+
+print(res['retweetCount'])
+
+with open('src/user-tweets.json') as raw:
+    dat = raw.readlines()
 
 res = {}
-for i in range(1, 9, 1):
-    j = i/10
-    res[j] = list(testProcedure(data, 'ks', j))
 
-print(res)
+tweet = 0
+for line in dat:
+    res |= {tweet: json.loads(line)}
+    tweet += 1
 
+for i in range(0,99):
+    data['likes'].append(res[i]['likeCount'])
+    data['retweets'].append(res[i]['retweetCount'])
 
+print(data)
+
+print(testProcedure(data, 'ks', L))
