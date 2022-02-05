@@ -4,14 +4,32 @@
 
 
 from benfordslaw import benfordslaw
+import pandas as pd
 
 # Initialize
-bl = benfordslaw(alpha=0.05)
+bl = benfordslaw(alpha=0.05, method='ks')
 
-# get test data
-X = []
-with open('testData.txt') as raw:
-    X.append(raw.readline)
+""" # get test data
+with open('src/testData.txt') as raw:
+    D = raw.read()
+
+X = D.split('\n')
+
+while (X[-1] == ''):
+    del X[-1]
+
+
+for index in range(0, len(X)):
+    X[index] = int(X[index]) """
+
+""" # Load elections example
+df = bl.import_example(data='USA')
+
+# Extract election information.
+X = df['votes'].loc[df['candidate']=='Donald Trump'].values
+ """
+
+X = pd.read_csv('src/testData.txt')
 
 # Print
 print(X)
