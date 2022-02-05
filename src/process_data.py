@@ -6,7 +6,7 @@ L = 0.2
 from benfordslaw import benfordslaw
 import pandas as pd
 import json
-
+from get_data import get_account_info
 
 
 def benfordsLawTest(data, method='ks'):
@@ -69,7 +69,7 @@ data = {'followers' :[1929345],
         'retweets': []}
 
 
-with open('src/user-tweets-single.json') as raw:
+""" with open('src/user-tweets-single.json') as raw:
     res = json.load(raw)
 print(type(res))
 for key in res:
@@ -93,4 +93,13 @@ for i in range(0,99):
 
 print(data)
 
-print(testProcedure(data, 'ks', L))
+print(testProcedure(data, 'ks', L)) """
+
+# get data
+returnedData = get_account_info("BBC", 1000)
+
+
+data['likes'] = returnedData.tweet_likes
+data['retweets'] = returnedData.tweet_retweets
+
+print(data)
