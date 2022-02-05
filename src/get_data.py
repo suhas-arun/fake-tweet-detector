@@ -1,7 +1,6 @@
 import snscrape.modules.twitter as sntwitter
 from itertools import islice
 from account_info import AccountInfo
-from time import time
 
 
 def get_user_id(username):
@@ -26,10 +25,9 @@ def get_account_info(username, max_tweets=100):
     likes = []
     retweets = []
 
-    start = time()
     likes, retweets = get_likes_retweets(tweets)
-    t = time() - start
-    print(t)
+
+    # TODO: Repeat for followers to get additional data up to 1000
 
     num_followers = sntwitter.TwitterUserScraper(username)._get_entity().followersCount
 
@@ -42,6 +40,3 @@ def get_likes_retweets(tweets, likes=[], retweets=[]):
         retweets.append(tweet.retweetCount)
 
     return likes, retweets
-
-
-print(get_account_info("imperialcollege", 1000))
