@@ -1,2 +1,3 @@
 tweepy
 benfordslaw
+snscrape==0.4.3.20220107.dev11+gaa7d7d3
