@@ -1,3 +1,2 @@
-tweepy
 benfordslaw
-nltk
+git+https://github.com/JustAnotherArchivist/snscrape@master#snscrape

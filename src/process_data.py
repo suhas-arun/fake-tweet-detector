@@ -1,7 +1,7 @@
 # this is a test
 #This is a 2nd test
 
-L = 0.5
+L = 0.2
 
 from benfordslaw import benfordslaw
 import pandas as pd
@@ -26,7 +26,8 @@ def calculateMagnitude(inputList):
     minVal = min(inputList)
     minOrder = len(str(minVal))-1
     maxVal = max(inputList)
-    maxOrder = len(str(minVal))-1
+    maxOrder = len(str(maxVal))-1
+    print("Mag:", maxOrder-minOrder)
     return (maxOrder - minOrder)
            
 
@@ -44,20 +45,31 @@ def testProcedure(importedData, method, l):
     pFollowers = benfordsLawTest(followers, method=method)
     pLikes = benfordsLawTest(likes, method=method)
     pRetweets = benfordsLawTest(retweets, method=method)
-    wFollowers = calulateWeightings(L, calculateMagnitude(followers))
-    wLikes = calulateWeightings(L, calculateMagnitude(likes))
-    wRetweets = calulateWeightings(L, calculateMagnitude(retweets))
+    
+    wFollowers = calulateWeightings(l, calculateMagnitude(followers))
+    wLikes = calulateWeightings(l, calculateMagnitude(likes))
+    wRetweets = calulateWeightings(l, calculateMagnitude(retweets))
+
+    print(wFollowers, wLikes, wRetweets)
 
     pAverage = ((pFollowers * wFollowers) + (pLikes * wLikes) + (pRetweets * wRetweets))/(wFollowers + wLikes + wRetweets)
     print("P Average:\t", pAverage)
-    return pAverage
+    return pAverage, (wFollowers+wLikes+wRetweets)/3
 
     
 
     
 
 
-data = []
-testProcedure(data, 'ks', L)
+data = {'followers' :[12,14,18,3,2,54,85,97656,7,847,4542,465],
+        'likes' :[1,1,14,5,2,67,1,234,6,23,56,7,8,2,0,0,1],
+        'retweets': [1,2,2,1,1,1,1,5,3,6,8,5,0,4,9]}
+
+res = {}
+for i in range(1, 9, 1):
+    j = i/10
+    res[j] = list(testProcedure(data, 'ks', j))
+
+print(res)
 
 

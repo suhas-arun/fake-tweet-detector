@@ -1,38 +1,47 @@
-import tweepy
-from config import bearer_token
+import snscrape.modules.twitter as sntwitter
+from itertools import islice
 from account_info import AccountInfo
-
-client = tweepy.Client(bearer_token)
+from time import time
 
 
 def get_user_id(username):
-    """Gets user id for a given username. Returns -1 if user not found"""
     try:
-        return client.get_user(username=username).data.id
-    except tweepy.HTTPException:
+        return sntwitter.TwitterUserScraper(username)._get_entity().id
+    except (AttributeError, ValueError):
         return -1
 
 
-def get_tweets(username, max_results):
-    """Gets the max_results most recent tweets from a given user"""
-    return client.search_recent_tweets(
-        query=f"from:{get_user_id(username)}",
-        tweet_fields=["public_metrics"],
-        max_results=max_results,
+def get_tweets(username, max_tweets=100):
+    return islice(
+        sntwitter.TwitterSearchScraper(f"from:{username}").get_items(), max_tweets
     )
 
 
-def get_account_info(name):
-    tweets = get_tweets(name, 10)
-    num_followers = client.get_user(username=name, user_fields=["public_metrics"]).data.public_metrics['followers_count']
+def get_account_info(username, max_tweets=100):
+    tweets = get_tweets(username, max_tweets)
+    account_id = get_user_id(username)
+    if id == -1:
+        return None
+
     likes = []
     retweets = []
 
-    for tweet in tweets.data or []:
-        metrics = tweet.public_metrics
-        likes.append(metrics['like_count'])
-        retweets.append(metrics['retweet_count'])
+    start = time()
+    likes, retweets = get_likes_retweets(tweets)
+    t = time() - start
+    print(t)
 
-    return AccountInfo(name, num_followers, likes, retweets)
+    num_followers = sntwitter.TwitterUserScraper(username)._get_entity().followersCount
 
-print(get_account_info("barackobama"))
+    return AccountInfo(account_id, username, num_followers, likes, retweets)
+
+
+def get_likes_retweets(tweets, likes=[], retweets=[]):
+    for tweet in tweets:
+        likes.append(tweet.likeCount)
+        retweets.append(tweet.retweetCount)
+
+    return likes, retweets
+
+
+print(get_account_info("imperialcollege", 1000))
