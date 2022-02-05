@@ -1,2 +1,3 @@
 benfordslaw
 git+https://github.com/JustAnotherArchivist/snscrape@master#snscrape
+nltk
