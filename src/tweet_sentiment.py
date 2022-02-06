@@ -41,14 +41,15 @@ def tweet_sentiment_bygen(strings_list):
 # Takes in long string (sentence or paragraph), then returns the final string without any meaningless punctuation/words.
 def remove_stopwords(message):
     words = nltk.word_tokenize(message)
-    #print(words)
+    # print(words)
     words = [w for w in words if w not in stopwords]
-    #print(words)
+    # print(words)
     final_string = ""
     for i in range(len(words)):
         if words[i].isalpha() or (("." or "!" or "?") in words[i]):
             final_string += (words[i].lower()) + " "
     return final_string
+
 
 # Takes in paragraph then splits into sentences, then uses nltk lib to test for positivity and negativity.
 def tweet_sentiment_bysent(strings_list):
@@ -59,9 +60,9 @@ def tweet_sentiment_bysent(strings_list):
     for i in range(len(strings_list)):
         sentences = nltk.sent_tokenize(strings_list[i])
         for j in range(len(sentences)):
-            #print(sentences[j])
+            # print(sentences[j])
             sentences[j] = remove_stopwords(sentences[j])
-            #print(sentences[j])
+            # print(sentences[j])
             result = sia.polarity_scores(sentences[j].lower())
             positive_sum += result["pos"]
             negative_sum += result["neg"]
@@ -70,8 +71,10 @@ def tweet_sentiment_bysent(strings_list):
     return positive_sum / counter, negative_sum / counter, neutral_sum / counter
 
 
-if __name__ == '__main__':
-    data = pd.DataFrame(get_tweets("ICHackUK", max_tweets=1000))#Put person's twitter account here.
+if __name__ == "__main__":
+    data = pd.DataFrame(
+        get_tweets("ICHackUK", max_tweets=1000)
+    )  # Put person's twitter account here.
 
     tweets = data["content"]
 
