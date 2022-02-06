@@ -18,6 +18,7 @@ class Twitter(QWidget):
         label.setAlignment(QtCore.Qt.AlignCenter)
         self.bot_chance = QLabel(self)
         self.fake_news_chance = QLabel(self)
+        self.positivity = QLabel(self)
         self.input = QLineEdit(self)
         self.submit = QPushButton("Analyse", self)
         self.loading = QLabel(self)
@@ -43,6 +44,7 @@ class Twitter(QWidget):
         self.vlayout.addLayout(hlayout)
         self.vlayout.addWidget(self.bot_chance)
         self.vlayout.addWidget(self.fake_news_chance)
+        self.vlayout.addWidget(self.positivity)
 
         self.setFont(f)
         self.resize(1200, 500)
@@ -51,17 +53,16 @@ class Twitter(QWidget):
 
     def get_probabilities(self, search):
         from random import randint
-        from time import sleep
-
-        sleep(2)
-        self.loading_gif.stop()
-        self.loading.hide()
         try:
             bot = accountBotTest(search)
-            self.bot_chance.setText("Bot Probability: " + bot)
-        except:
+            self.bot_chance.setText("Bot Probability: " + "{:.1f}".format(bot) + "%")
+        except BaseException as e:
+            print(e)
             self.bot_chance.setText("Error: User does not exist!")
-        self.bot_chance.setText("Bot Probability: " + str(randint(0, 100)))
+
+        self.loading_gif.stop()
+        self.loading.hide()
+
         self.fake_news_chance.setText("Fake News Probability: " + str(randint(0, 100)))
         self.bot_chance.show()
         self.fake_news_chance.show()
