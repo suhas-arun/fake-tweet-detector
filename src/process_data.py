@@ -182,7 +182,6 @@ def misinformationCheck(data):
     # return proportion of falses out of totals
     falses = 0
     for content in data:
-        print(content)
         # parse over to data return
         res = detect_fake_tweet(content)
         if res == 1:
