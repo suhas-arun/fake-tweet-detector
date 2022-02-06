@@ -70,8 +70,9 @@ def tweet_sentiment_bysent(strings_list):
     return positive_sum / counter, negative_sum / counter, neutral_sum / counter
 
 
-data = pd.DataFrame(get_tweets("ICHackUK", max_tweets=1000))#Put person's twitter account here.
+if __name__ == '__main__':
+    data = pd.DataFrame(get_tweets("ICHackUK", max_tweets=1000))#Put person's twitter account here.
 
-tweets = data["content"]
+    tweets = data["content"]
 
-print(tweet_sentiment_bysent(tweets))
+    print(tweet_sentiment_bysent(tweets))
