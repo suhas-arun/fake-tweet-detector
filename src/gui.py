@@ -46,7 +46,7 @@ class Twitter(QWidget):
 
         self.setFont(f)
         self.resize(1200, 500)
-        self.loading.move(self.width()//2 - 75, self.height()*2/3 - 60)
+        self.loading.move(self.width()//2 - 75, int(self.height()*2/3) - 60)
         self.show()
 
     def get_probabilities(self, search):
