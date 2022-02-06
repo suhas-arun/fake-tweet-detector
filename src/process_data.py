@@ -202,7 +202,7 @@ def accountBotTest(account):
     # get sentiment
     positivity, negativity, neutrality = tweet_sentiment_bysent(tweets['content'])
     if neutrality >= 0.9:
-        return 'Neutral'
+        return 'Neutral', botscore
     if position > negativity:
         # positive
         if (positivity - negativity) > 5:
