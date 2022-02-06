@@ -1,7 +1,6 @@
-import sys
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtWidgets import QPushButton, QLabel, QLineEdit
-from PyQt5.QtWidgets import QWidget, QApplication, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout
 from process_data import accountBotTest
 import threading
 
@@ -80,7 +79,7 @@ class Twitter(QWidget):
 
         try:
             font_style = "font-size: 36px"
-            sentiment, bot = accountBotTest(search)
+            sentiment, bot, fakeness = accountBotTest(search)
             bot = min(bot, 99)
             self.bot_chance.setText("{:.1f}".format(bot) + "%")
             self.positivity.setText(sentiment)
@@ -90,6 +89,16 @@ class Twitter(QWidget):
                 )
             else:
                 self.bot_chance.setStyleSheet(
+                    f"color: rgb(255, {(100-bot)/50*255}, 0); {font_style}"
+                )
+
+            self.fake_news_chance.setText("{:.1f}".format(fakeness) + "%")
+            if fakeness < 50:
+                self.fake_news_chance.setStyleSheet(
+                    f"color: rgb({bot/50*255}, 255, 0); {font_style}"
+                )
+            else:
+                self.fake_news_chance.setStyleSheet(
                     f"color: rgb(255, {(100-bot)/50*255}, 0); {font_style}"
                 )
 
@@ -135,9 +144,3 @@ class Twitter(QWidget):
         search = self.input.text()
         thread = threading.Thread(target=self.get_probabilities, args=[search])
         thread.start()
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = Twitter()
-    sys.exit(app.exec_())
