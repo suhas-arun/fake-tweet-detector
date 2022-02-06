@@ -75,8 +75,6 @@ class Twitter(QWidget):
         self.show()
 
     def get_probabilities(self, search):
-        from random import randint
-
         try:
             font_style = "font-size: 36px"
             sentiment, bot, fakeness = accountBotTest(search)
