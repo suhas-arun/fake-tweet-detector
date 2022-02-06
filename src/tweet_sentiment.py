@@ -50,19 +50,6 @@ def remove_stopwords(message):
             final_string += (words[i].lower()) + " "
     return final_string
 
-# Takes in long string (sentence or paragraph), then returns the final string without any meaningless punctuation/words.
-def remove_stopwords(message):
-    words = nltk.word_tokenize(message)
-    print(words)
-    words = [w for w in words if w not in stopwords]
-    print(words)
-    final_string = ""
-    for i in range(len(words)):
-        if words[i].isalpha() or (("." or "!" or "?") in words[i]):
-            final_string += (words[i].lower()) + " "
-    return final_string
-
-
 # Takes in paragraph then splits into sentences, then uses nltk lib to test for positivity and negativity.
 def tweet_sentiment_bysent(strings_list):
     positive_sum = 0
