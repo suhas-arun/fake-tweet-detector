@@ -16,7 +16,7 @@ class Twitter(QWidget):
         self.submit = QPushButton("Analyse", self)
         self.loading = QLabel(self)
         self.loading.resize(100, 100)
-        self.loading_gif = QtGui.QMovie('../loading.gif')
+        self.loading_gif = QtGui.QMovie("../loading.gif")
 
         self.setWindowTitle("Twitter account checker")
         self.loading.setAlignment(QtCore.Qt.AlignCenter)
@@ -42,6 +42,7 @@ class Twitter(QWidget):
     def get_probabilities(self, search):
         from random import randint
         from time import sleep
+
         sleep(2)
         self.loading_gif.stop()
         self.loading.hide()
@@ -60,7 +61,7 @@ class Twitter(QWidget):
         thread.start()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Twitter()
     sys.exit(app.exec_())

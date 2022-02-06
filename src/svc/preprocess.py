@@ -5,9 +5,12 @@ import pandas as pd
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
+from itertools import chain
+
 
 STEMMER = SnowballStemmer("english")
 NON_ALPHABET = "[^A-Za-z]"
+STOPWORDS = set(stopwords.words("english"))
 
 
 def process_tweet_files(path, data):
@@ -46,6 +49,7 @@ def process_tweet_text(text):
 
 
 def create_df():
+    nltk.download("stopwords")
     data = [[], []]
     dirs = [os.path.join(PATH, dir) for dir in next(os.walk(PATH))[1]]
 
@@ -53,11 +57,6 @@ def create_df():
         data = process_tweet_files(os.path.join(dir, "non-rumours"), data)
         data = process_tweet_files(os.path.join(dir, "rumours"), data)
 
-    return pd.DataFrame(list(zip(data[0], data[1])), columns=["tweet", "rumour"])
-
-
-nltk.download("stopwords")
-STOPWORDS = set(stopwords.words("english"))
-
-df = create_df()
-print(df)
+    return data[0], pd.DataFrame(
+        list(zip(data[0], data[1])), columns=["tweet", "rumour"]
+    )
