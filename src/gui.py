@@ -94,6 +94,7 @@ class Twitter(QWidget):
 
             self.fake_news_chance.setText("{:.1f}".format(fakeness) + "%")
             if fakeness < 50:
+<<<<<<< HEAD
                 self.fake_news_chance.setStyleSheet(
                     f"color: rgb({bot/50*255}, 255, 0); {font_style}"
                 )
@@ -101,6 +102,12 @@ class Twitter(QWidget):
                 self.fake_news_chance.setStyleSheet(
                     f"color: rgb(255, {(100-bot)/50*255}, 0); {font_style}"
                 )
+=======
+                self.fake_news_chance.setStyleSheet(f"color: rgb({bot/50*255}, 255, 0); {font_style}")
+            else:
+                self.fake_news_chance.setStyleSheet(f"color: rgb(255, {(100-bot)/50*255}, 0); {font_style}")
+
+>>>>>>> 0bf6ff5474bce6257b2c92f35062159b4ee5172b
 
             font_style = "font-size: 36px"
 
