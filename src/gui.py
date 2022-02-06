@@ -14,10 +14,11 @@ class Twitter(QWidget):
         self.fake_news_chance = QLabel(self)
         self.input = QLineEdit(self)
         self.submit = QPushButton("Analyse", self)
-        self.setWindowTitle("Twitter account checker")
         self.loading = QLabel(self)
-        self.loading.setAlignment(QtCore.Qt.AlignCenter)
         self.loading_gif = QtGui.QMovie('../loading.gif')
+
+        self.setWindowTitle("Twitter account checker")
+        self.loading.setAlignment(QtCore.Qt.AlignCenter)
         self.loading.setMovie(self.loading_gif)
 
         self.submit.clicked.connect(self.analyse)
@@ -25,7 +26,7 @@ class Twitter(QWidget):
         self.submit.clicked.connect(self.analyse)
 
         self.vlayout = QVBoxLayout(self)
-        hlayout = QHBoxLayout(self)
+        hlayout = QHBoxLayout()
         hlayout.addWidget(label)
         hlayout.addWidget(self.input)
         self.vlayout.addLayout(hlayout)
