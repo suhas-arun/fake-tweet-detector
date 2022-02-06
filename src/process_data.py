@@ -4,7 +4,9 @@
 L = 0.5
 
 from datetime import datetime, timezone
+from turtle import position
 from get_data import get_account_info, get_tweets
+from tweet_sentiment import tweet_sentiment_bysent
 from scipy import stats
 import pandas as pd
 
@@ -195,11 +197,26 @@ def accountBotTest(account):
     print(account, ":", botScore)
     threshold = 0.11
     # times by 500 so anything above 55% is a bit
-    return botScore * 500
+    botScore = min(botScore * 420,99)
+
+    # get sentiment
+    positivity, negativity, neutrality = tweet_sentiment_bysent(tweets['content'])
+    if neutrality >= 0.9:
+        return 'Neutral', botScore
+    if positivity > negativity:
+        # positive
+        if (positivity - negativity) > 5:
+            return 'Very Positive', botScore
+        else:
+            return 'Slightly Positive', botScore
+    
+    else:
+        if (negativity - positivity) > 5:
+            return 'Very Negative', botScore
+        else:
+            return 'Slightly Negative', botScore
 
 
-accounts = ["ICHackUK","FoxNews", "imperialcollege", "BBCNews", "A12_Info", "HEISEI_love_bot", "earthquakesSF"]
-# accounts = ["elonmusk"]
+# accounts = ["ICHackUK","FoxNews", "imperialcollege", "BBCNews", "A12_Info", "HEISEI_love_bot", "earthquakesSF"]
+# accounts = ["elonmusk"] 
 
-results = []
-print(results)
