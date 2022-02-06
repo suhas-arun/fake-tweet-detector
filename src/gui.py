@@ -2,14 +2,20 @@ import sys
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtWidgets import QPushButton, QLabel, QLineEdit
 from PyQt5.QtWidgets import QWidget, QApplication, QVBoxLayout, QHBoxLayout
+from process_data import accountBotTest
 import threading
+
+SIZE = 36
 
 
 class Twitter(QWidget):
     def __init__(self):
         super().__init__()
+        f = QtGui.QFont()
+        f.setPixelSize(SIZE)
 
-        label = QLabel("Account:", self)
+        label = QLabel("Enter an account to be analysed:", self)
+        label.setAlignment(QtCore.Qt.AlignCenter)
         self.bot_chance = QLabel(self)
         self.fake_news_chance = QLabel(self)
         self.input = QLineEdit(self)
@@ -21,22 +27,26 @@ class Twitter(QWidget):
         self.setWindowTitle("Twitter account checker")
         self.loading.setAlignment(QtCore.Qt.AlignCenter)
         self.loading.setMovie(self.loading_gif)
+        self.loading.hide()
 
         self.submit.clicked.connect(self.analyse)
-        self.submit.clicked.connect(self.loading_gif.start)
-        self.submit.clicked.connect(self.analyse)
+        self.loading.resize(150, 150)
+        self.loading_gif.setScaledSize(QtCore.QSize(150,150))
 
         self.vlayout = QVBoxLayout(self)
+        self.vlayout.setAlignment(QtCore.Qt.AlignTop)
+        self.vlayout.setSpacing(20)
         hlayout = QHBoxLayout()
-        hlayout.addWidget(label)
         hlayout.addWidget(self.input)
+        hlayout.addWidget(self.submit)
+        self.vlayout.addWidget(label)
         self.vlayout.addLayout(hlayout)
-        self.vlayout.addWidget(self.submit)
-        self.vlayout.addWidget(self.loading)
         self.vlayout.addWidget(self.bot_chance)
         self.vlayout.addWidget(self.fake_news_chance)
 
-        self.resize(300, 100)
+        self.setFont(f)
+        self.resize(1200, 500)
+        self.loading.move(self.width()//2 - 75, self.height()*2/3 - 60)
         self.show()
 
     def get_probabilities(self, search):
@@ -46,6 +56,11 @@ class Twitter(QWidget):
         sleep(2)
         self.loading_gif.stop()
         self.loading.hide()
+        try:
+            bot = accountBotTest(search)
+            self.bot_chance.setText("Bot Probability: " + bot)
+        except:
+            self.bot_chance.setText("Error: User does not exist!")
         self.bot_chance.setText("Bot Probability: " + str(randint(0, 100)))
         self.fake_news_chance.setText("Fake News Probability: " + str(randint(0, 100)))
         self.bot_chance.show()
