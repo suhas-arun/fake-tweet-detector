@@ -1,4 +1,6 @@
 .idea
 .vscode
 src/__pycache__
+src/svc/__pycache__
 data/svm-data
+models
