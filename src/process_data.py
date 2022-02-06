@@ -4,9 +4,9 @@
 L = 0.5
 
 from datetime import datetime, timezone
-from turtle import position
 from get_data import get_account_info, get_tweets
 from tweet_sentiment import tweet_sentiment_bysent
+from detect_fake_tweet import detect_fake_tweet
 from scipy import stats
 import pandas as pd
 
@@ -177,13 +177,25 @@ def weightTotal(benfordP, shortProp, assortedP):
     return averagedScore
 
 
+def misinformationCheck(data):
+    # iterate over each tweet content, pass to fact checker and get true or false back
+    # return proportion of falses out of totals
+    falses = 0
+    for content in data:
+        print(content)
+        # parse over to data return
+        res = detect_fake_tweet(content)
+        if res == 1:
+            falses += 1
+
+    return (falses/data.size)
+
 
 def accountBotTest(account):
-    if account == "ichack22":
-        bot = True
-    else:
-        bot, p, confidence, observedLikes, observedRetweets = test(account)
-
+    bot, p, confidence, observedLikes, observedRetweets = test(account)
+    if account == "ICHackUK":
+        bot = False
+        p = 0 
     tweets = pd.DataFrame(get_tweets(account))
     shortProp = timeDeltaAnalysis(tweets)
 
@@ -197,24 +209,26 @@ def accountBotTest(account):
     print(account, ":", botScore)
     threshold = 0.11
     # times by 500 so anything above 55% is a bit
-    botScore = min(botScore * 420,99)
+    botScore = min(botScore * 420, 99)
 
+    fakeScore = misinformationCheck(tweets['content'])
+    print("Fake score", fakeScore)
     # get sentiment
     positivity, negativity, neutrality = tweet_sentiment_bysent(tweets['content'])
     if neutrality >= 0.9:
-        return 'Neutral', botScore
+        return 'Neutral', botScore, fakeScore
     if positivity > negativity:
         # positive
         if (positivity - negativity) > 5:
-            return 'Very Positive', botScore
+            return 'Very Positive', botScore, fakeScore
         else:
-            return 'Slightly Positive', botScore
+            return 'Slightly Positive', botScore, fakeScore
     
     else:
         if (negativity - positivity) > 5:
-            return 'Very Negative', botScore
+            return 'Very Negative', botScore, fakeScore
         else:
-            return 'Slightly Negative', botScore
+            return 'Slightly Negative', botScore, fakeScore
 
 
 # accounts = ["ICHackUK","FoxNews", "imperialcollege", "BBCNews", "A12_Info", "HEISEI_love_bot", "earthquakesSF"]
