@@ -42,7 +42,7 @@ To find bot accounts, we used a [Kolmogorov-Smirnov test](https://en.wikipedia.o
 
 ## Fake news accounts
 
-For this, we used a machine learning algorithm ([State Vector Classification](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html)), trained with the [PHEME dataset](https://doi.org/10.6084/m9.figshare.6392078.v1), which contains tweets from both misinformed and trustworthy sources. We were able to achieve an accuracy level of 85% on the test data.
+For this, we used a machine learning algorithm ([Support Vector Classification](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html)), trained with the [PHEME dataset](https://doi.org/10.6084/m9.figshare.6392078.v1), which contains tweets from both misinformed and trustworthy sources. We were able to achieve an accuracy level of 85% on the test data.
 
 ## Sentiment Analysis
 
