@@ -91,7 +91,7 @@ def test(accountName):
     data["likes"] = returnedData.tweet_likes
     data["retweets"] = returnedData.tweet_retweets
 
-    finalP, confidence = testProcedure(data, "ks", L)
+    finalP, confidence, observedLikes, observedRetweets = testProcedure(data, "ks", L)
     if finalP > 0.35:
         return True, finalP, confidence, observedLikes, observedRetweets
     else:
