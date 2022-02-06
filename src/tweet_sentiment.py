@@ -67,6 +67,19 @@ def remove_stopwords(message):
     return final_string
 
 
+# Takes in long string (sentence or paragraph), then returns the final string without any meaningless punctuation/words.
+def remove_stopwords(message):
+    words = nltk.word_tokenize(message)
+    print(words)
+    words = [w for w in words if w not in stopwords]
+    print(words)
+    final_string = ""
+    for i in range(len(words)):
+        if words[i].isalpha() or (("." or "!" or "?") in words[i]):
+            final_string += (words[i].lower()) + " "
+    return final_string
+
+
 # Takes in paragraph then splits into sentences, then uses nltk lib to test for positivity and negativity.
 def tweet_sentiment_bysent(strings_list):
     positive_sum = 0
@@ -86,6 +99,14 @@ def tweet_sentiment_bysent(strings_list):
             counter += 1
     return positive_sum / counter, negative_sum / counter, neutral_sum / counter
 
+
+data = pd.DataFrame(get_tweets("elonmusk", max_tweets=500))
+# print(data['content'])
+
+tweets = data["content"]
+
+# print(tweet_sentiment_bygen(positive_list_1))
+# print(tweet_sentiment_bysent(positive_list))
 
 data = pd.DataFrame(get_tweets("elonmusk", max_tweets=500))
 # print(data['content'])
