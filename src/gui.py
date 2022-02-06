@@ -93,11 +93,11 @@ class Twitter(QWidget):
             self.fake_news_chance.setText("{:.1f}".format(fakeness) + "%")
             if fakeness < 50:
                 self.fake_news_chance.setStyleSheet(
-                    f"color: rgb({bot/50*255}, 255, 0); {font_style}"
+                    f"color: rgb({(fakeness/50)*255}, 255, 0); {font_style}"
                 )
             else:
                 self.fake_news_chance.setStyleSheet(
-                    f"color: rgb(255, {(100-bot)/50*255}, 0); {font_style}"
+                    f"color: rgb(255, {(100-fakeness)/50*255}, 0); {font_style}"
                 )
 
             font_style = "font-size: 36px"
