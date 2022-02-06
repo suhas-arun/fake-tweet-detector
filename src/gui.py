@@ -80,7 +80,7 @@ class Twitter(QWidget):
 
         try:
             font_style = "font-size: 36px"
-            sentiment, bot = accountBotTest(search)
+            sentiment, bot, fakeness = accountBotTest(search)
             bot = min(bot, 99)
             self.bot_chance.setText("{:.1f}".format(bot) + "%")
             self.positivity.setText(sentiment)
@@ -92,6 +92,13 @@ class Twitter(QWidget):
                 self.bot_chance.setStyleSheet(
                     f"color: rgb(255, {(100-bot)/50*255}, 0); {font_style}"
                 )
+
+            self.fake_news_chance.setText("{:.1f}".format(fakeness) + "%")
+            if fakeness < 50:
+                self.fake_news_chance.setStyleSheet(f"color: rgb({bot/50*255}, 255, 0); {font_style}")
+            else:
+                self.fake_news_chance.setStyleSheet(f"color: rgb(255, {(100-bot)/50*255}, 0); {font_style}")
+
 
             font_style = "font-size: 36px"
 
