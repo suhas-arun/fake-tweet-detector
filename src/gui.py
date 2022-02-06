@@ -54,7 +54,7 @@ class Twitter(QWidget):
     def get_probabilities(self, search):
         from random import randint
         try:
-            bot = accountBotTest(search)
+            sentiment, bot = accountBotTest(search)
             self.bot_chance.setText("Bot Probability: " + "{:.1f}".format(bot) + "%")
         except BaseException as e:
             print(e)
