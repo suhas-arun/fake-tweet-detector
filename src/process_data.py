@@ -197,7 +197,7 @@ def accountBotTest(account):
     print(account, ":", botScore)
     threshold = 0.11
     # times by 500 so anything above 55% is a bit
-    botScore = botScore * 500
+    botScore = min(botScore * 420,99)
 
     # get sentiment
     positivity, negativity, neutrality = tweet_sentiment_bysent(tweets['content'])
