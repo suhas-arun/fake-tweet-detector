@@ -24,7 +24,7 @@ class Twitter(QWidget):
         self.submit = QPushButton("Analyse", self)
         self.loading = QLabel(self)
         self.loading.resize(100, 100)
-        self.loading_gif = QtGui.QMovie("../loading.gif")
+        self.loading_gif = QtGui.QMovie("../img/loading.gif")
 
         self.setWindowTitle("Twitter account checker")
         self.loading.setAlignment(QtCore.Qt.AlignCenter)
@@ -33,7 +33,7 @@ class Twitter(QWidget):
 
         self.submit.clicked.connect(self.analyse)
         self.loading.resize(150, 150)
-        self.loading_gif.setScaledSize(QtCore.QSize(150,150))
+        self.loading_gif.setScaledSize(QtCore.QSize(150, 150))
 
         self.vlayout = QVBoxLayout(self)
         self.vlayout.setAlignment(QtCore.Qt.AlignTop)
@@ -62,13 +62,14 @@ class Twitter(QWidget):
         self.setFont(self.f)
         self.resize(1200, 500)
         self.label2.setText("Positivity Rating:")
-        self.loading.move(self.width()//2 - 75, int(self.height()*2/3) - 60)
+        self.loading.move(self.width() // 2 - 75, int(self.height() * 2 / 3) - 60)
         self.label3.hide()
         self.bot_chance.hide()
         self.show()
 
     def get_probabilities(self, search):
         from random import randint
+
         try:
             font_style = "font-size: 36px"
             sentiment, bot = accountBotTest(search)
@@ -76,9 +77,13 @@ class Twitter(QWidget):
             self.bot_chance.setText("{:.1f}".format(bot) + "%")
             self.positivity.setText(sentiment)
             if bot < 50:
-                self.bot_chance.setStyleSheet(f"color: rgb({bot/50*255}, 255, 0); {font_style}")
+                self.bot_chance.setStyleSheet(
+                    f"color: rgb({bot/50*255}, 255, 0); {font_style}"
+                )
             else:
-                self.bot_chance.setStyleSheet(f"color: rgb(255, {(100-bot)/50*255}, 0); {font_style}")
+                self.bot_chance.setStyleSheet(
+                    f"color: rgb(255, {(100-bot)/50*255}, 0); {font_style}"
+                )
 
             font_style = "font-size: 36px"
 
