@@ -44,7 +44,7 @@ class Twitter(QWidget):
         from time import sleep
         sleep(2)
         self.loading_gif.stop()
-        #self.loading.hide()
+        self.loading.hide()
         self.bot_chance.setText("Bot Probability: " + str(randint(0, 100)))
         self.fake_news_chance.setText("Fake News Probability: " + str(randint(0, 100)))
         self.bot_chance.show()
