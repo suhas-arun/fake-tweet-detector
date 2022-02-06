@@ -119,8 +119,6 @@ class Twitter(QWidget):
 
         self.loading_gif.stop()
         self.loading.hide()
-
-        self.fake_news_chance.setText(str(randint(0, 100)))
         self.bot_chance.show()
         self.fake_news_chance.show()
         self.label2.show()
