@@ -23,7 +23,7 @@ class Twitter(QWidget):
         self.submit = QPushButton("Analyse", self)
         self.loading = QLabel(self)
         self.loading.resize(100, 100)
-        self.loading_gif = QtGui.QMovie("../img/loading.gif")
+        self.loading_gif = QtGui.QMovie("img/loading.gif")
 
         self.setWindowTitle("Twitter account checker")
         self.loading.setAlignment(QtCore.Qt.AlignCenter)
