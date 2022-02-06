@@ -16,7 +16,7 @@ class Twitter(QWidget):
 
         label = QLabel("Enter an account to be analysed:", self)
         label.setAlignment(QtCore.Qt.AlignCenter)
-        self.bot_chance = QLabel(self)
+        self.bot_chance = QLabel()
         self.fake_news_chance = QLabel(self)
         self.positivity = QLabel(self)
         self.label2 = QLabel(self)
@@ -46,9 +46,15 @@ class Twitter(QWidget):
         hlayout2.addWidget(self.label2)
         hlayout2.addWidget(self.positivity)
 
+        self.label3 = QLabel("Bot Probability:")
+        hlayout3 = QHBoxLayout()
+        hlayout3.addWidget(self.label3)
+        hlayout3.addWidget(self.bot_chance)
+        hlayout3.setAlignment(QtCore.Qt.AlignLeft)
+
         self.vlayout.addWidget(label)
         self.vlayout.addLayout(hlayout)
-        self.vlayout.addWidget(self.bot_chance)
+        self.vlayout.addLayout(hlayout3)
         self.vlayout.addWidget(self.fake_news_chance)
         self.vlayout.addLayout(hlayout2)
         self.label2.hide()
@@ -57,6 +63,8 @@ class Twitter(QWidget):
         self.resize(1200, 500)
         self.label2.setText("Positivity Rating:")
         self.loading.move(self.width()//2 - 75, int(self.height()*2/3) - 60)
+        self.label3.hide()
+        self.bot_chance.hide()
         self.show()
 
     def get_probabilities(self, search):
@@ -65,7 +73,7 @@ class Twitter(QWidget):
             font_style = "font-size: 36px"
             sentiment, bot = accountBotTest(search)
             bot = min(bot, 99)
-            self.bot_chance.setText("Bot Probability: " + "{:.1f}".format(bot) + "%")
+            self.bot_chance.setText("{:.1f}".format(bot) + "%")
             self.positivity.setText(sentiment)
             if bot < 50:
                 self.bot_chance.setStyleSheet(f"color: rgb({bot/50*255}, 255, 0); {font_style}")
@@ -97,11 +105,15 @@ class Twitter(QWidget):
         self.fake_news_chance.show()
         self.label2.show()
         self.positivity.show()
+        self.label3.show()
+        self.bot_chance.show()
 
     def analyse(self):
         self.fake_news_chance.hide()
         self.bot_chance.hide()
         self.label2.hide()
+        self.label3.hide()
+        self.bot_chance.hide()
         self.loading.show()
         self.positivity.hide()
         self.loading_gif.start()
