@@ -18,8 +18,6 @@ import pandas as pd
 
 sia = SentimentIntensityAnalyzer()
 stopwords = nltk.corpus.stopwords.words("english")
-# result = sia.polarity_scores("Wow, NLTK is really powerful!")
-# print(result['neg'], result['pos'])
 
 positive_list_1 = [
     "Wow, NLTK is powerful!",
@@ -100,20 +98,8 @@ def tweet_sentiment_bysent(strings_list):
     return positive_sum / counter, negative_sum / counter, neutral_sum / counter
 
 
-data = pd.DataFrame(get_tweets("elonmusk", max_tweets=500))
-# print(data['content'])
+data = pd.DataFrame(get_tweets("", max_tweets=1000))
 
 tweets = data["content"]
-
-# print(tweet_sentiment_bygen(positive_list_1))
-# print(tweet_sentiment_bysent(positive_list))
-
-data = pd.DataFrame(get_tweets("elonmusk", max_tweets=500))
-# print(data['content'])
-
-tweets = data["content"]
-
-# print(tweet_sentiment_bygen(positive_list_1))
-# print(tweet_sentiment_bysent(positive_list))
 
 print(tweet_sentiment_bysent(tweets))
