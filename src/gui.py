@@ -45,15 +45,18 @@ class Twitter(QWidget):
         self.loading.hide()
         self.bot_chance.setText("Bot Probability: " + str(randint(0, 100)))
         self.fake_news_chance.setText("Fake News Probability: " + str(randint(0, 100)))
+        self.bot_chance.show()
+        self.fake_news_chance.show()
 
     def analyse(self):
-        self.fake_news_chance.setText('')
-        self.bot_chance.setText('')
+        self.fake_news_chance.hide()
+        self.bot_chance.hide()
         self.loading.show()
         self.loading_gif.start()
         search = self.input.text()
         thread = threading.Thread(target=self.get_probabilities, args=[search])
         thread.start()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
