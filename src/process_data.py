@@ -4,7 +4,6 @@
 L = 0.5
 
 from datetime import datetime, timezone
-from zoneinfo import ZoneInfo
 from get_data import get_account_info, get_tweets
 from scipy import stats
 import pandas as pd
@@ -81,7 +80,7 @@ def testProcedure(importedData, method, l):
     print("like stat:\t", likesStat)
     print("P Average:\t", pAverage)
     print("Confidence:\t", (wLikes+wRetweets)/2)
-    return pAverage, (wLikes+wRetweets)/2
+    return pAverage, (wLikes+wRetweets)/2, observedLikes, observedRetweets
     
 
 
@@ -100,11 +99,11 @@ def test(accountName):
     data['retweets'] = returnedData.tweet_retweets
 
 
-    finalP, confidence = testProcedure(data, 'ks', L)
+    finalP, confidence, observedLikes, observedRetweets = testProcedure(data, 'ks', L)
     if finalP > 0.35:
-        return True, finalP, confidence
+        return True, finalP, confidence, observedLikes, observedRetweets
     else:
-        return False, finalP, confidence
+        return False, finalP, confidence, observedLikes, observedRetweets
 
 
 def timeDifferenceTest(timeDifferences):
@@ -180,14 +179,12 @@ def weightTotal(benfordP, shortProp, assortedP):
     return averagedScore
 
 
-accounts = ["ICHackUK","FoxNews", "imperialcollege", "BBCNews", "A12_Info", "HEISEI_love_bot", "earthquakesSF"]
-# accounts = ["elonmusk"]
-results = []
-for account in accounts:
+
+def accountBotTest(account):
     if account == "ichack22":
         bot = True
     else:
-        bot, p, confidence = test(account)
+        bot, p, confidence, observedLikes, observedRetweets = test(account)
 
     tweets = pd.DataFrame(get_tweets(account))
     shortProp = timeDeltaAnalysis(tweets)
@@ -201,9 +198,12 @@ for account in accounts:
     print(account, ':', assortedP)
     print(account, ':', botScore)
     threshold = 0.11
-    if botScore > threshold:
-        results.append(True)
-    else:
-        results.append(False)
+    # times by 500 so anything above 55% is a bit
+    return botScore * 500
 
+
+accounts = ["ICHackUK","FoxNews", "imperialcollege", "BBCNews", "A12_Info", "HEISEI_love_bot", "earthquakesSF"]
+# accounts = ["elonmusk"]
+
+results = []
 print(results)
