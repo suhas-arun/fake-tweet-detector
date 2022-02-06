@@ -187,7 +187,7 @@ def misinformationCheck(data):
         if res == 1:
             falses += 1
 
-    return (falses/data.size)
+    return min(200*falses/data.size, 100)
 
 
 def accountBotTest(account):
